@@ -16,6 +16,12 @@ The analysis is conducted using real-world data and focuses on probabilistic mod
 1. Model participation levels across locations and estimate the probability of the highest turnout
 2. Analyse fastest finishing times using a hierarchical Bayesian model
 3. Perform predictive simulations for future events using posterior samples
+   a. Find a 95% credible interval for the ‘fastest male finishing time’ in Cranbrook on January
+18th 2025;
+   b. Estimate the probability that, on February 22nd 2025, the fastest ‘fastest female finishing
+time’ is faster than the slowest ‘fastest male finishing time’ across the 8 given locations.
+You should ensure that the error on your estimate is less than 0.01.
+
 
 ## Methods
 - Bayesian Poisson regression (count modelling)
