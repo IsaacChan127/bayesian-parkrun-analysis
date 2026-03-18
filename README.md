@@ -24,7 +24,4 @@ This project applies Bayesian statistical modelling to analyse parkrun participa
 - `/figures`: plots
 - `report.pdf`: full coursework write-up
 
-## How to Run
-1. Install required R packages
-2. Load dataset
-3. Run scripts in `/code`
+
