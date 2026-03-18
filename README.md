@@ -24,4 +24,10 @@ This project applies Bayesian statistical modelling to analyse parkrun participa
 - `/figures`: plots
 - `report.pdf`: full coursework write-up
 
+## Full Report
 
+For a detailed academic write-up of this project, including model formulation, prior choices, posterior inference, and evaluation, please refer to:
+
+📄 `report.pdf`
+
+The report demonstrates end-to-end Bayesian modelling using R and Stan.
