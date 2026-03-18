@@ -1,7 +1,21 @@
 # Bayesian Analysis of Parkrun Data
 
-## Overview
-This project applies Bayesian statistical modelling to analyse parkrun participation and performance across locations.
+## Problem Overview
+
+This project analyses parkrun data from 8 locations in Devon using Bayesian statistical methods.
+
+The objectives are:
+- Model the number of finishers at each location using count data
+- Analyse fastest finishing times using hierarchical models
+- Perform posterior predictive inference for future events
+
+The analysis is conducted using real-world data and focuses on probabilistic modelling, inference, and prediction.
+
+## Tasks
+
+1. Model participation levels across locations and estimate the probability of the highest turnout
+2. Analyse fastest finishing times using a hierarchical Bayesian model
+3. Perform predictive simulations for future events using posterior samples
 
 ## Methods
 - Bayesian Poisson regression (count modelling)
