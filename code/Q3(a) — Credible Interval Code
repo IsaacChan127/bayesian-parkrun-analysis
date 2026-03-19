@@ -1,0 +1,33 @@
+# Load 2025 data
+data_2025 <- readRDS("data/parkrun2025.rds")
+
+# Filter for the specific event
+new_obs <- data_2025 %>%
+  filter(Location == "Cranbrook", Gender == "Male", Date == "2025-01-18")
+
+# Extract posterior draws
+posterior_draws <- as_draws_df(model2_hier)
+
+# Extract parameters
+beta0 <- posterior_draws$b_Intercept
+beta_gender <- posterior_draws$`b_GenderMale`
+sigma <- posterior_draws$sigma
+
+# Extract Cranbrook random effect
+u_cranbrook_col <- grep(
+  "^r_Location\\[Cranbrook,Intercept\\]$",
+  names(posterior_draws),
+  value = TRUE
+)
+u_cranbrook <- posterior_draws[[u_cranbrook_col]]
+
+# Simulate predictions
+set.seed(42)
+n_draws <- length(beta0)
+eps <- rnorm(n_draws, mean = 0, sd = sigma)
+
+pred_times <- beta0 + beta_gender + u_cranbrook + eps
+
+# 95% credible interval
+ci_95 <- quantile(pred_times, probs = c(0.025, 0.975))
+ci_95
