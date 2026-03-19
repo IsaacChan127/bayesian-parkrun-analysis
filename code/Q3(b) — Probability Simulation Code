@@ -1,41 +1,52 @@
-
 data_2025 <- readRDS("data/parkrun2025.rds")
+
 # Filtering
 feb22 <- filter(data_2025, Date == "2025-02-22")
+
 # Extracting posterior samples
 posterior_draws <- as_draws_df(model2_hier)
+
 # Separate fixed effects and sigma
 beta0 <- posterior_draws$b_Intercept
 beta_gender <- posterior_draws$`b_GenderMale`
 sigma <- posterior_draws$sigma
+
 # Extracting random intercepts for each location
 get_location_effect <- function(loc_name) {
-col_name <- paste0("r_Location[", loc_name, ",Intercept]")
-posterior_draws[[col_name]]
+  col_name <- paste0("r_Location[", loc_name, ",Intercept]")
+  posterior_draws[[col_name]]
 }
+
 locations <- unique(feb22$Location)
+
 # Preallocate vectors for min(female) and max(male) per posterior draw
 n_draws <- length(beta0)
 min_female <- numeric(n_draws)
 max_male <- numeric(n_draws)
+
 # Loop through posterior draws to generate simulated times
 set.seed(42)
+
 for (i in 1:n_draws) {
-female_times <- numeric(length(locations))
-male_times <- numeric(length(locations))
-for (j in seq_along(locations)) {
-loc <- locations[j]
-u_loc <- posterior_draws[[paste0("r_Location[", loc, ",Intercept]")]][i]
-eps_f <- rnorm(1, 0, sigma[i])
-eps_m <- rnorm(1, 0, sigma[i])
-female_times[j] <- beta0[i] + u_loc + eps_f
-male_times[j] <- beta0[i] + beta_gender[i] + u_loc + eps_m
+  female_times <- numeric(length(locations))
+  male_times <- numeric(length(locations))
+  
+  for (j in seq_along(locations)) {
+    loc <- locations[j]
+    u_loc <- posterior_draws[[paste0("r_Location[", loc, ",Intercept]")]][i]
+    eps_f <- rnorm(1, 0, sigma[i])
+    eps_m <- rnorm(1, 0, sigma[i])
+    female_times[j] <- beta0[i] + u_loc + eps_f
+    male_times[j] <- beta0[i] + beta_gender[i] + u_loc + eps_m
+  }
+  
+  min_female[i] <- min(female_times)
+  max_male[i] <- max(male_times)
 }
- min_female[i] <- min(female_times)
-max_male[i] <- max(male_times)
-}
+
 # Estimate the probability
 prob <- mean(min_female < max_male)
 se <- sqrt(prob * (1 - prob) / n_draws)
+
 # Results
-cat("Estimated P(fastest female < slowest male) =", round(prob, 4), "\n")z
+cat("Estimated P(fastest female < slowest male) =", round(prob, 4), "\n")
